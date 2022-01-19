@@ -14,3 +14,16 @@ const firebaseConfig = {
     measurementId: "G-5JT4P2YBDN"
 }
 firebase.initializeApp(firebaseConfig)
+
+// Utils
+const db = firebase.firestore()
+const auth = firebase.auth()
+
+// referências de coleção
+const colecaoUsuarios = db.collection('usuarios')
+
+export {
+    db,
+    auth,
+    colecaoUsuarios
+}

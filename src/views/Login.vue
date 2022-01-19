@@ -27,24 +27,24 @@
                   <h1>Iniciar</h1>
                   <div>
                       <label for="name">Nome</label>
-                      <input type="text" id="" placeholder="seu nome">
+                      <input type="text" id="" placeholder="seu nome" v-model.trim="cadastrarForm.nome" /> 
                   </div>
 
                    <div>
                       <label for="title">Titulo</label>
-                      <input type="text" id="title" placeholder="digite um titulo">
+                      <input type="text" id="title" placeholder="digite um titulo" v-model.trim="cadastrarForm.titulo" />
                   </div>
 
                   <div>
                       <label for="email2">Titulo</label>
-                      <input type="text" id="email2" placeholder="seu@email.com">
+                      <input type="text" id="email2" placeholder="seu@email.com" v-model.trim="cadastrarForm.email" />
                   </div>
 
                   <div>
                       <label for="password2">Senha</label>
-                      <input type="password" id="password2" placeholder="minimo 6 caracteres">
+                      <input type="password" id="password2" placeholder="minimo 6 caracteres" v-model.trim="cadastrarForm.password" />
                   </div>
-                  <button class="button">Cadastrar-se</button>
+                  <button class="button" @click="cadastrar()">Cadastrar-se</button>
                   <div class="extras">
                       <a href="">Volte ao login</a>
                   </div>
@@ -56,7 +56,46 @@
 
 <script>
 export default {
+    data() {
+        return {
+            entrarForm: {
+                email: '',
+                password: ''
+            },
 
+            cadastrarForm: {
+                nome: '',
+                titulo: '',
+                email: '',
+                password: ''
+            },
+            exibirEntrarForm: true,
+            exibirSenhaRedefinir: false
+        }
+    },
+    methods: {
+        alternarForm() {
+            this.exibirEntrarForm = !this.exibirEntrarForm
+        },
+        alternarRedefinicaoSenha() {
+            this.exibirSenhaRedefinir() 
+            this.exibirSenhaRedefinir = !this.exibirSenhaRedefinir
+        },
+        entrar() {
+            this.$store.dispatch('login', {
+                email: this.loginForm.email,
+                password: this.loginForm.password
+            })
+        },
+        cadastrar() {
+            this.$store.dispatch('signup', {
+                email: this.cadastrarForm.email,
+                password: this.cadastrarForm.password,
+                nome: this.cadastrarForm.nome,
+                titulo: this.cadastrarForm.titulo
+            })
+        }
+    }
 }
 </script>
 
