@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+      <PasswordReset v-if="exibirSenhaRedefinir" @close="alternarRedefinicaoSenha()"></PasswordReset>
       <section>
           <div class="col1">
               <h1>Vuegram</h1>
@@ -19,7 +20,7 @@
                   </div>
                   <button class="button" @click="entrar()">Entrar</button>
                   <div class="extras">
-                      <a href="#">Esqueceu a senha?</a>
+                      <a @click="alternarRedefinicaoSenha()">Esqueceu a senha?</a>
                       <a href="#">Criar uma conta?</a>
                   </div>
               </form>
@@ -55,7 +56,11 @@
 </template>
 
 <script>
+import PasswordReset from '@/components/PasswordReset'
 export default {
+    components: {
+        PasswordReset
+    },
     data() {
         return {
             entrarForm: {
