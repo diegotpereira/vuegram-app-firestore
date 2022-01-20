@@ -53,6 +53,18 @@ const store = new Vuex.Store({
             if (router.currentRoute.path === '/login') {
                 router.push('/')
             }
+        },
+        async atualizarPerfil({ dispatch }, usuario) {
+
+            const usuarioId = fb.auth.currentUser.uid
+
+            // atualizar objeto de usuário
+            const usuarioRef = await fb.colecaoUsuarios.doc(usuarioId).update({
+                nome: usuario.nome,
+                titulo: usuario.titulo
+            })
+
+            dispatch('buscarPerfilUsuario', { uid: usuarioId })
         }
     }
 })
