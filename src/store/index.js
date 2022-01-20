@@ -21,6 +21,14 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        async entrar({ dispatch }, form) {
+            // login do usuário
+            const { usuario } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+
+            dispatch('fetchUserProfile', usuario)
+
+            alert("Usuario entrou");
+        },
         async cadastrar({ dispatch }, form) {
             const { usuario } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
 

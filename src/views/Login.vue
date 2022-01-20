@@ -6,18 +6,18 @@
                 <p>Bem vindo a <a href="#" target="_blank">DTP Software</a> com exemplo de aplicativo da Web de mídia social desenvolvido com Vue.js e Firebase.
                     Criei este projeto consultando o Guia definitivo de introdução ao Vue.js</p>
           </div>
-          <div class="col2">
-              <form>
+          <div class="col2" :class="{ 'signup-form': !exibirEntrarForm }">
+              <form v-if="exibirEntrarForm" @submit.prevent>
                   <h1>Bem vindo de volta</h1>
                   <div>
                       <label for="email1">E-mail</label>
-                      <input type="text" placeholder="seu@email.com" id="email1" />
+                      <input type="text" placeholder="seu@email.com" id="email1" v-model.trim="entrarForm.email" />
                   </div>
                   <div>
                       <label for="password1">Senha</label>
-                      <input type="text" placeholder="**********" id="password1" />
+                      <input type="text" placeholder="**********" id="password1" v-model.trim="entrarForm.password" />
                   </div>
-                  <button class="button">Entrar</button>
+                  <button class="button" @click="entrar()">Entrar</button>
                   <div class="extras">
                       <a href="#">Esqueceu a senha?</a>
                       <a href="#">Criar uma conta?</a>
@@ -78,13 +78,12 @@ export default {
             this.exibirEntrarForm = !this.exibirEntrarForm
         },
         alternarRedefinicaoSenha() {
-            this.exibirSenhaRedefinir() 
             this.exibirSenhaRedefinir = !this.exibirSenhaRedefinir
         },
         entrar() {
-            this.$store.dispatch('login', {
-                email: this.loginForm.email,
-                password: this.loginForm.password
+            this.$store.dispatch('entrar', {
+                email: this.entrarForm.email,
+                password: this.entrarForm.password
             })
         },
         cadastrar() {
