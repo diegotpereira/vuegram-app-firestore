@@ -1,23 +1,24 @@
 import Vue from "vue";
 import Vuex from 'vuex'
 import * as fb from '../firebase'
+import router from "../router";
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        userProfile: {},
-        posts: []
+        usuarioPerfil: {},
+        postagens: []
     },
     mutations: {
-        setUserProfile(state, val) {
-            state.userProfile = val
+        setUsuarioPerfil(state, val) {
+            state.usuarioPerfil = val
         },
         setPerformingRequest(state, val) {
             state.setPerformingRequest = val
         },
-        setPosts(state, val) {
-            state.posts = val
+        setPostagens(state, val) {
+            state.postagens = val
         }
     },
     actions: {
@@ -25,7 +26,8 @@ const store = new Vuex.Store({
             // login do usuário
             const { usuario } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
 
-            dispatch('fetchUserProfile', usuario)
+            // buscar o perfil do usuário e definir no estado
+            dispatch('buscarPerfilUsuario', usuario)
 
             alert("Usuario entrou");
         },
@@ -37,7 +39,20 @@ const store = new Vuex.Store({
                 titulo: form.titulo
             })
 
-            dispatch('fetchUserProfile', usuario)
+            // buscar o perfil do usuário e definir no estado
+            dispatch('buscarPerfilUsuario', usuario)
+        },
+        async buscarPerfilUsuario({ commit }, usuario) {
+            // buscar perfil de usuário
+            const usuarioPerfil = await fb.colecaoUsuarios.doc(usuario.uid).get()
+
+            // definir perfil de usuário no estado
+            commit('setUsuarioPerfil', usuarioPerfil.data())
+
+            // alterar rota para o painel
+            if (router.currentRoute.path === '/login') {
+                router.push('/')
+            }
         }
     }
 })

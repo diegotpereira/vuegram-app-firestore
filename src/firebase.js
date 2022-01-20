@@ -21,9 +21,13 @@ const auth = firebase.auth()
 
 // referências de coleção
 const colecaoUsuarios = db.collection('usuarios')
+const colecaoComentarios = db.collection('comentarios')
+const colecaoPostagens = db.collection('postagens')
 
 export {
     db,
     auth,
-    colecaoUsuarios
+    colecaoUsuarios,
+    colecaoComentarios,
+    colecaoPostagens
 }
