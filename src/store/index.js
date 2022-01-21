@@ -1,9 +1,23 @@
 import Vue from "vue";
 import Vuex from 'vuex'
 import * as fb from '../firebase'
-import router from "../router";
+import router from "../router/index";
+
 
 Vue.use(Vuex)
+
+fb.colecaoPostagens.orderBy('CriadoEm', 'desc').onSnapshot(snapshot => {
+    let postsArray = []
+
+    snapshot.forEach(doc => {
+        let postagem = doc.data()
+        postagem.id = doc.id
+
+        postsArray.push(postagem)
+    })
+
+    store.commit('setPostagens', postsArray)
+})
 
 const store = new Vuex.Store({
     state: {
@@ -29,6 +43,7 @@ const store = new Vuex.Store({
             // buscar o perfil do usuário e definir no estado
             dispatch('buscarPerfilUsuario', usuario)
 
+            console.log(usuario);
             alert("Usuario entrou");
         },
         async cadastrar({ dispatch }, form) {
@@ -38,15 +53,13 @@ const store = new Vuex.Store({
                 nome: form.nome,
                 titulo: form.titulo
             })
+            console.log(usuario);
 
             // buscar o perfil do usuário e definir no estado
             dispatch('buscarPerfilUsuario', usuario)
         },
         async buscarPerfilUsuario({ commit }, usuario) {
-            // buscar perfil de usuário
             const usuarioPerfil = await fb.colecaoUsuarios.doc(usuario.uid).get()
-
-            // definir perfil de usuário no estado
             commit('setUsuarioPerfil', usuarioPerfil.data())
 
             // alterar rota para o painel
@@ -54,7 +67,30 @@ const store = new Vuex.Store({
                 router.push('/')
             }
         },
+
+        async sair({ commit }) {
+
+            await fb.auth.signOut()
+
+            commit('setUsuarioPerfil', {})
+
+            router.push('/login')
+        },
+
+        async criarPostagem({ state, commit }, postagem) {
+
+            await fb.colecaoPostagens.add({
+                criadaEm: new Date(),
+                content: postagem.content,
+                usuarioId: fb.auth.currentUser.uid,
+                usuarioNome: state.usuarioPerfil.nome,
+                comentarios: 0,
+                curtidas: 0
+            })
+            console.log(commit);
+        },
         async atualizarPerfil({ dispatch }, usuario) {
+
 
             const usuarioId = fb.auth.currentUser.uid
 
@@ -64,6 +100,7 @@ const store = new Vuex.Store({
                 titulo: usuario.titulo
             })
 
+            console.log(usuarioRef);
             dispatch('buscarPerfilUsuario', { uid: usuarioId })
         }
     }

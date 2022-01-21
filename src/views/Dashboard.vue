@@ -1,7 +1,7 @@
 <template>
   <div id="dashboard">
       <transition name="fade">
-          <CommentModal v-if="exibirComentarioModal()" :post="selecionarPost" @close="alternarComentarioModal()"></CommentModal>
+          <CommentModal v-if="exibirComentarioModal" :postagem="selecionarPost" @close="alternarComentarioModal()"></CommentModal>
       </transition>
       <section>
           <div class="col1">
@@ -11,7 +11,8 @@
                   <div class="create-post">
                       <p>criar uma postagem</p>
                       <form @submit.prevent>
-                          <textarea @click="criarPostagem()" :disabled="post.content === ''" class="button">postagem</textarea>
+                          <textarea v-model.trim="postagem.content"></textarea>
+                          <button @click="criarPostagem()" :disabled="postagem.content === ''" class="button">postagem</button>
                       </form>
                   </div>
               </div>
@@ -50,7 +51,7 @@
                       </ul>
                   </div>
                   <div v-show="postagemComentarios.length" class="comments">
-                      <div class="comments" v-for="comentario in postagemComentarios" :key="comentario.id">
+                      <div class="comment" v-for="comentario in postagemComentarios" :key="comentario.id">
                           <p>{{ comentario.usuarioNome }}</p>
                           <span>{{ comentario.criadoEm | formatDate }}</span>
                           <p>{{ comentario.content }}</p>
@@ -111,7 +112,7 @@ export default {
         },
         async exibirPostagem(postagem) {
 
-            const docs = await colecaoComentarios.where('postageId', '==', postagem.id).get()
+            const docs = await colecaoComentarios.where('postagemId', '==', postagem.id).get()
 
             docs.forEach(doc => {
                 let comentario = doc.data()

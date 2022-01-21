@@ -12,7 +12,7 @@
                   <li>
                       <router-link to="/settings">Configurações</router-link>
                   </li>
-                  <li><a @click="sair()">Sair</a></li>
+                  <li><a >Sair</a></li>
               </ul>
           </div>
       </section>
@@ -23,7 +23,7 @@
 export default {
     methods: {
         sair() {
-            this.$store.dispatch('logout')
+            this.$store.dispatch('sair')
         }
     }
 }

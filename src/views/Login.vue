@@ -16,12 +16,12 @@
                   </div>
                   <div>
                       <label for="password1">Senha</label>
-                      <input type="text" placeholder="**********" id="password1" v-model.trim="entrarForm.password" />
+                      <input type="password" placeholder="**********" id="password1" v-model.trim="entrarForm.password" />
                   </div>
                   <button class="button" @click="entrar()">Entrar</button>
                   <div class="extras">
                       <a @click="alternarRedefinicaoSenha()">Esqueceu a senha?</a>
-                      <a href="#">Criar uma conta?</a>
+                      <a @click="alternarForm()">Criar uma conta?</a>
                   </div>
               </form>
               <form action="">

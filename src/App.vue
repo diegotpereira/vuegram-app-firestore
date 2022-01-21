@@ -1,21 +1,21 @@
 <template>
   <div id="app">
     <SiteNav v-if="showNav"></SiteNav>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import SiteNav from '@/components/SiteNav'
+import { mapState } from "vuex";
+import SiteNav from "@/components/SiteNav";
 export default {
-    components: {
-        SiteNav
+  components: {
+    SiteNav,
+  },
+  computed: {
+    ...mapState(["usuarioPerfil"]),
+    showNav() {
+      return Object.keys(this.usuarioPerfil).length > 1;
     },
-    computed: {
-        ...mapState(['usuarioPerfil']),
-        showNav() {
-            return Object.keys(this.usuarioPerfil).length > 1
-        }
-    }
-}
+  },
+};
 </script>
