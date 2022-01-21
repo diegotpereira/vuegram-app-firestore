@@ -6,8 +6,8 @@
       <section>
           <div class="col1">
               <div class="profile">
-                  <h5>{{ usuarioPerfil.nome }}</h5>
-                  <p>{{ usuarioPerfil.titulo }}</p>
+                  <h5>{{ userProfile.name }}</h5>
+                  <p>{{ userProfile.title }}</p>
                   <div class="create-post">
                       <p>criar uma postagem</p>
                       <form @submit.prevent>
@@ -20,7 +20,7 @@
           <div class="col2">
               <div v-if="postagens.length">
                   <div v-for="postagem in postagens" :key="postagem.id" class="post">
-                      <h5>{{ postagem.usuarioNome }}</h5>
+                      <h5>{{ postagem.userName }}</h5>
                       <span>{{ postagem.criadaEm | formatDate }}</span>
                       <p>{{ postagem.content | trimLength }}</p>
                       <ul>
@@ -42,7 +42,7 @@
               <div class="p-container">
                   <a class="close" @click="fecharPostModal()">fechar</a>
                   <div class="post">
-                      <h5>{{ completoPostagem.usuarioNome }}</h5>
+                      <h5>{{ completoPostagem.userName }}</h5>
                       <span>{{ completoPostagem.criadoEm | formatDate }}</span>
                       <p>{{ completoPostagem.content }}</p>
                       <ul>
@@ -52,7 +52,7 @@
                   </div>
                   <div v-show="postagemComentarios.length" class="comments">
                       <div class="comment" v-for="comentario in postagemComentarios" :key="comentario.id">
-                          <p>{{ comentario.usuarioNome }}</p>
+                          <p>{{ comentario.userName }}</p>
                           <span>{{ comentario.criadoEm | formatDate }}</span>
                           <p>{{ comentario.content }}</p>
                       </div>
@@ -64,12 +64,13 @@
 </template>
 
 <script>
-import CommentModal from '@/components/CommentModal'
-import { mapState} from 'vuex'
-import moment from 'moment'
 import { colecaoComentarios } from '@/firebase'
-
+import { mapState } from 'vuex'
+import moment from 'moment'
+import CommentModal from '@/components/CommentModal'
+//import store from '@/store'
 export default {
+    //store: store,
     components: {
         CommentModal
     },
@@ -87,7 +88,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['usuarioPerfil', 'postagens'])
+        ...mapState(['userProfile', 'postagens'])
     },
     methods: {
 
@@ -130,10 +131,7 @@ export default {
     },
     filters: {
         formatDate(val) {
-            if (!val) {
-                
-                '-'
-            }
+            if (!val) { return '-'}
             let data = val.toDate()
 
             return moment(data).fromNow()

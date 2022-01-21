@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-//import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
 import { auth } from '../firebase'
 
@@ -13,7 +12,7 @@ const routes = [
         name: 'Dashboard',
         component: Dashboard,
         meta: {
-            requerAutenticacao: true
+            requiresAuth: true
         }
     },
     {
@@ -46,9 +45,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const requerAutenticacao = to.matched.some(x => x.meta.requerAutenticacao)
+    const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
 
-    if (requerAutenticacao && !auth.currentUser) {
+    if (requiresAuth && !auth.currentUser) {
         next('/login')
     } else {
         next()

@@ -5,17 +5,19 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import SiteNav from "@/components/SiteNav";
+import { mapState } from 'vuex'
+import SiteNav from '@/components/SiteNav'
 export default {
   components: {
-    SiteNav,
+    SiteNav
   },
   computed: {
-    ...mapState(["usuarioPerfil"]),
-    showNav() {
-      return Object.keys(this.usuarioPerfil).length > 1;
-    },
+    ...mapState(["userProfile"]),
   },
-};
+  methods: {
+      showNav() {         
+        return Object.keys(this.userProfile).length > 1
+    }
+  }
+}
 </script>

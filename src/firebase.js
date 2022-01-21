@@ -24,11 +24,13 @@ const auth = firebase.auth()
 const colecaoUsuarios = db.collection('usuarios')
 const colecaoComentarios = db.collection('comentarios')
 const colecaoPostagens = db.collection('postagens')
+const colecaoCurtidas = db.collection('curtidas')
 
 export {
     db,
     auth,
     colecaoUsuarios,
     colecaoComentarios,
-    colecaoPostagens
+    colecaoPostagens,
+    colecaoCurtidas
 }

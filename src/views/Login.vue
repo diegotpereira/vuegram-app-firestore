@@ -28,12 +28,12 @@
                   <h1>Iniciar</h1>
                   <div>
                       <label for="name">Nome</label>
-                      <input type="text" id="nome" placeholder="seu nome" v-model.trim="cadastrarForm.nome" /> 
+                      <input type="text" id="name" placeholder="seu nome" v-model.trim="cadastrarForm.name" /> 
                   </div>
 
                    <div>
                       <label for="title">Titulo</label>
-                      <input type="text" id="titulo" placeholder="digite um titulo" v-model.trim="cadastrarForm.titulo" />
+                      <input type="text" id="title" placeholder="digite um titulo" v-model.trim="cadastrarForm.title" />
                   </div>
 
                   <div>
@@ -69,8 +69,8 @@ export default {
             },
 
             cadastrarForm: {
-                nome: '',
-                titulo: '',
+                name: '',
+                title: '',
                 email: '',
                 password: ''
             },
@@ -86,7 +86,7 @@ export default {
             this.exibirSenhaRedefinir = !this.exibirSenhaRedefinir
         },
         entrar() {
-            this.$store.dispatch('entrar', {
+            this.$store.dispatch('login', {
                 email: this.entrarForm.email,
                 password: this.entrarForm.password
             })
@@ -95,8 +95,8 @@ export default {
             this.$store.dispatch('cadastrar', {
                 email: this.cadastrarForm.email,
                 password: this.cadastrarForm.password,
-                nome: this.cadastrarForm.nome,
-                titulo: this.cadastrarForm.titulo
+                name: this.cadastrarForm.name,
+                title: this.cadastrarForm.title
             })
         }
     }
