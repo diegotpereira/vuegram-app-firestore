@@ -68,9 +68,7 @@ import { colecaoComentarios } from '@/firebase'
 import { mapState } from 'vuex'
 import moment from 'moment'
 import CommentModal from '@/components/CommentModal'
-//import store from '@/store'
 export default {
-    //store: store,
     components: {
         CommentModal
     },
