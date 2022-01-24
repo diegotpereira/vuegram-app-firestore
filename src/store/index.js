@@ -61,6 +61,7 @@ const store = new Vuex.Store({
             // buscar perfil de usuário
             const usuarioPerfil = await fb.colecaoUsuarios.doc(user.uid).get()
 
+
             // definir perfil de usuário no estado
             commit('setUsuarioPerfil', usuarioPerfil.data())
 
