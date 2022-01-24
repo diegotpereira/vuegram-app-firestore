@@ -7,7 +7,7 @@ import router from '../router/index'
 Vue.use(Vuex)
 
 // firebase em tempo real
-fb.colecaoPostagens.orderBy('CriadoEm', 'desc').onSnapshot(snapshot => {
+fb.colecaoPostagens.orderBy('criadaEm', 'desc').onSnapshot(snapshot => {
     let postsArray = []
 
     snapshot.forEach(doc => {

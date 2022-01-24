@@ -1,10 +1,11 @@
 <template>
   <div class="c-modal">
       <div class="c-container">
-          <a @click="$emit('fechar')">fechar</a>
+          <a @click="$emit('close')">fechar</a>
           <p>adicionar um comentário</p>
           <form @submit.prevent>
               <textarea v-model.trim="comentario"></textarea>
+              <button @click="adicionarComentario()" :disabled="comment == ''" class="button">Adicione Comentário</button>
           </form>
       </div>
   </div>
@@ -20,7 +21,7 @@ export default {
         }
     },
     methods: {
-        async addComentario() {
+        async adicionarComentario() {
             // criar comentario
             await colecaoComentarios.add({
                 criadoEm: new Date(),
@@ -34,6 +35,9 @@ export default {
             await colecaoPostagens.doc(this.postagem.id).update({
                 comentarios: parseInt(this.postagem.comentarios) + 1
             })
+
+            // fechar modal
+            this.$emit('close')
         }
     }
 }
