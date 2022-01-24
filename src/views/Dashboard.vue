@@ -1,7 +1,7 @@
 <template>
   <div id="dashboard">
       <transition name="fade">
-          <CommentModal v-if="exibirComentarioModal" :postagem="selecionarPost" @close="alternarComentarioModal()"></CommentModal>
+          <CommentModal v-if="exibirComentarioModal" :postagem="selecionarPostagem" @close="alternarComentarioModal()"></CommentModal>
       </transition>
       <section>
           <div class="col1">
