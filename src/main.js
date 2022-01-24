@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 
 let app
 
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(usuario => {
     if (!app) {
         app = new Vue({
             router,
@@ -18,7 +18,7 @@ auth.onAuthStateChanged(user => {
         }).$mount('#app')
     }
 
-    if (user) {
-        store.dispatch('buscarPerfilUsuario', user)
+    if (usuario) {
+        store.dispatch('buscarPerfilUsuario', usuario)
     }
 })

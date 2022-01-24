@@ -12,11 +12,11 @@ export default {
     SiteNav
   },
   computed: {
-    ...mapState(["userProfile"]),
+    ...mapState(["usuarioPerfil"]),
   },
   methods: {
       showNav() {         
-        return Object.keys(this.userProfile).length > 1
+        return Object.keys(this.usuarioPerfil).length > 1
     }
   }
 }

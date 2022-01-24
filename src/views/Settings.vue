@@ -1,21 +1,21 @@
 <template>
   <section id="settings">
     <div class="col1">
-      <h3>Settings</h3>
-      <p>Update your profile</p>
+      <h3>Configurações</h3>
+      <p>Atualize seu perfil</p>
 
       <transition name="fade">
-        <p v-if="showSuccess" class="success">profile updated</p>
+        <p v-if="exibirSucesso" class="success">perfil atualizado</p>
       </transition>
 
       <form @submit.prevent>
-        <label for="name">Name</label>
-        <input v-model.trim="name" type="text" :placeholder="userProfile.name" id="name" />
+        <label for="nome">Nome</label>
+        <input v-model.trim="nome" type="text" :placeholder="usuarioPerfil.nome" id="nome" />
 
-        <label for="title">Job Title</label>
-        <input v-model.trim="title" type="text" :placeholder="userProfile.title" id="title" />
+        <label for="titulo">Cargo</label>
+        <input v-model.trim="titulo" type="text" :placeholder="usuarioPerfil.titulo" id="titulo" />
 
-        <button @click="updateProfile()" class="button">Update Profile</button>
+        <button @click="alterarPerfil()" class="button">Atualizar perfil</button>
       </form>
     </div>
   </section>
@@ -27,28 +27,28 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      name: '',
-      title: '',
-      showSuccess: false
+      nome: '',
+      titulo: '',
+      exibirSucesso: false
     }
   },
   computed: {
-    ...mapState(['userProfile'])
+    ...mapState(['usuarioPerfil'])
   },
   methods: {
-    updateProfile() {
-      this.$store.dispatch('updateProfile', {
-        name: this.name !== '' ? this.name : this.userProfile.name,
-        title: this.title !== '' ? this.title : this.userProfile.title
+    alterarPerfil() {
+      this.$store.dispatch('alterarPerfil', {
+        nome: this.nome !== '' ? this.nome : this.usuarioPerfil.nome,
+        titulo: this.titulo !== '' ? this.titulo : this.usuarioPerfil.titulo
       })
 
-      this.name = ''
-      this.title = ''
+      this.nome = ''
+      this.titulo = ''
 
-      this.showSuccess = true
+      this.exibirSucesso = true
 
       setTimeout(() => {
-        this.showSuccess = false
+        this.exibirSucesso = false
       }, 2000)
     }
   }

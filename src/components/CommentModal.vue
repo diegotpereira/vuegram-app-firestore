@@ -26,8 +26,8 @@ export default {
                 criadoEm: new Date(),
                 content: this.comentario,
                 postagemId: this.postagem.id,
-                userId: auth.currentUser.uid,
-                userName: this.$store.state.userProfile.name 
+                usuarioId: auth.currentUser.uid,
+                usuarioNome: this.$store.state.usuarioPerfil.nome 
             })
 
             // atualizar contagem de comentários na postagem

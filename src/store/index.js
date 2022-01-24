@@ -21,12 +21,12 @@ fb.colecaoPostagens.orderBy('CriadoEm', 'desc').onSnapshot(snapshot => {
 
 const store = new Vuex.Store({
     state: {
-        userProfile: {},
+        usuarioPerfil: {},
         postagens: []
     },
     mutations: {
-        setUserProfile(state, val) {
-            state.userProfile = val
+        setUsuarioPerfil(state, val) {
+            state.usuarioPerfil = val
         },
         setPerformingRequest(state, val) {
             state.performingRequest = val
@@ -39,28 +39,28 @@ const store = new Vuex.Store({
     actions: {
         async entrar({ dispatch }, form) {
             // login do usuário
-            const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+            const { usuario } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
 
             // buscar o perfil do usuário e definir no estado
-            dispatch('buscarPerfilUsuario', user)
-            console.log(user);
+            dispatch('buscarPerfilUsuario', usuario)
+            console.log(usuario);
         },
         async cadastrar({ dispatch }, form) {
             const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
 
             await fb.colecaoUsuarios.doc(user.uid).set({
-                    name: form.name,
-                    title: form.title
-                })
-                //console.log(user);
+                nome: form.nome,
+                titulo: form.titulo
+            })
+
 
             // buscar o perfil do usuário e definir no estado
             dispatch('buscarPerfilUsuario', user)
         },
         async buscarPerfilUsuario({ commit }, user) {
-            const userProfile = await fb.colecaoUsuarios.doc(user.uid).get()
+            const usuarioPerfil = await fb.colecaoUsuarios.doc(user.uid).get()
 
-            commit('setUserProfile', userProfile.data())
+            commit('setUsuarioPerfil', usuarioPerfil.data())
 
             // alterar rota para o painel
             if (router.currentRoute.path === '/login') {
@@ -72,7 +72,7 @@ const store = new Vuex.Store({
 
             await fb.auth.signOut()
 
-            commit('setUserProfile', {})
+            commit('setUsuarioPerfil', {})
 
             router.push('/login')
 
@@ -83,8 +83,8 @@ const store = new Vuex.Store({
             await fb.colecaoPostagens.add({
                 criadaEm: new Date(),
                 content: postagem.content,
-                userId: fb.auth.currentUser.uid,
-                userName: state.userProfile.name,
+                usuarioId: fb.auth.currentUser.uid,
+                usuarioNome: state.usuarioPerfil.nome,
                 comentarios: 0,
                 curtidas: 0
             })
@@ -93,8 +93,8 @@ const store = new Vuex.Store({
 
         async curtirPostagem({ commit }, postagem) {
 
-            const userId = fb.auth.currentUser.uid
-            const docId = `${userId}_${postagem.id}`
+            const usuarioId = fb.auth.currentUser.uid
+            const docId = `${usuarioId}_${postagem.id}`
 
             const doc = await fb.colecaoCurtidas.doc(docId).get()
 
@@ -102,7 +102,7 @@ const store = new Vuex.Store({
 
             await fb.colecaoCurtidas.doc(docId).set({
                 postagemId: postagem.id,
-                userId: userId
+                usuarioId: usuarioId
             })
 
             console.log(commit);
@@ -111,31 +111,31 @@ const store = new Vuex.Store({
                 curtidas: postagem.contarCurtidas + 1
             })
         },
-        async updateProfile({ dispatch }, user) {
+        async alterarPerfil({ dispatch }, usuario) {
 
 
-            const userId = fb.auth.currentUser.uid
+            const usuarioId = fb.auth.currentUser.uid
 
             // atualizar objeto de usuário
-            const usuarioRef = await fb.colecaoUsuarios.doc(userId).update({
-                name: user.name,
-                title: user.title
+            const usuarioRef = await fb.colecaoUsuarios.doc(usuarioId).update({
+                nome: usuario.nome,
+                titulo: usuario.titulo
             })
 
             console.log(usuarioRef);
-            dispatch('buscarPerfilUsuario', { uid: userId })
+            dispatch('buscarPerfilUsuario', { uid: usuarioId })
 
-            const postDocs = await fb.colecaoPostagens.where('userId', '==', userId).get()
+            const postDocs = await fb.colecaoPostagens.where('usuarioId', '==', usuarioId).get()
             postDocs.forEach(doc => {
                 fb.colecaoPostagens.doc(doc.id).update({
-                    userName: user.name
+                    usuarioNome: usuario.nome
                 })
             })
 
-            const commentDocs = await fb.colecaoComentarios.where('userId', '==', userId).get()
+            const commentDocs = await fb.colecaoComentarios.where('usuarioId', '==', usuarioId).get()
             commentDocs.forEach(doc => {
                 fb.colecaoComentarios.doc(doc.id).update({
-                    userName: user.name
+                    usuarioNome: usuario.nome
                 })
             })
         }
@@ -143,7 +143,3 @@ const store = new Vuex.Store({
 })
 
 export default store
-//{
-//    //namespaced: true,
-//    store
-//}
