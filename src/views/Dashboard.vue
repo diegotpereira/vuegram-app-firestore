@@ -20,13 +20,13 @@
           <div class="col2">
               <div v-if="postagens.length">
                   <div v-for="postagem in postagens" :key="postagem.id" class="post">
-                      <h5>{{ postagem.userusuarioNome }}</h5>
+                      <h5>{{ postagem.usuarioNome }}</h5>
                       <span>{{ postagem.criadaEm | formatDate }}</span>
                       <p>{{ postagem.content | trimLength }}</p>
                       <ul>
                           <li><a @click="alternarComentarioModal(postagem)">Comentários {{ postagem.comentarios }}</a></li>
-                          <li><a @click="curtirPost(postagem.id, postagem.curtidas)">curtidas {{ postagem.curtidas }}</a></li>
-                          <li><a @click="exibirPost(postagem)">ver postagem completa</a></li>
+                          <li><a @click="curtirPostagem(postagem.id, postagem.curtidas)">curtidas {{ postagem.curtidas }}</a></li>
+                          <li><a @click="exibirPostagem(postagem)">ver postagem completa</a></li>
                       </ul>
                   </div>
               </div>
@@ -42,7 +42,7 @@
               <div class="p-container">
                   <a class="close" @click="fecharPostModal()">fechar</a>
                   <div class="post">
-                      <h5>{{ completoPostagem.userusuarioNome }}</h5>
+                      <h5>{{ completoPostagem.usuarioNome }}</h5>
                       <span>{{ completoPostagem.criadoEm | formatDate }}</span>
                       <p>{{ completoPostagem.content }}</p>
                       <ul>
@@ -52,7 +52,7 @@
                   </div>
                   <div v-show="postagemComentarios.length" class="comments">
                       <div class="comment" v-for="comentario in postagemComentarios" :key="comentario.id">
-                          <p>{{ comentario.userusuarioNome }}</p>
+                          <p>{{ comentario.usuarioNome }}</p>
                           <span>{{ comentario.criadoEm | formatDate }}</span>
                           <p>{{ comentario.content }}</p>
                       </div>
@@ -91,7 +91,6 @@ export default {
         ...mapState(['usuarioPerfil', 'postagens'])
     },
     methods: {
-
         criarPostagem() {
             this.$store.dispatch('criarPostagem', { content: this.postagem.content })
             this.postagem.content = ''
@@ -108,8 +107,8 @@ export default {
                 this.selecionarPostagem = {}
             }
         },
-        curtirPostagem(id, curtidasContagem) {
-            this.$store.dispatch('curtirPostagem', { id, curtidasContagem })
+        curtirPostagem(id, contarCurtidas) {
+            this.$store.dispatch('curtirPostagem', { id, contarCurtidas })
         },
         async exibirPostagem(postagem) {
 
@@ -120,7 +119,7 @@ export default {
                 comentario.id = doc.id 
                 this.postagemComentarios.push(comentario)
             })
-            this.completoPost = []
+            this.completoPost = postagem
             this.exibirPostModal = true 
         },
 
