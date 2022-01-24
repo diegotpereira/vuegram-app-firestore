@@ -24,7 +24,7 @@
                       <a @click="alternarForm()">Criar uma conta?</a>
                   </div>
               </form>
-              <form action="">
+              <form v-else @submit.prevent>
                   <h1>Iniciar</h1>
                   <div>
                       <label for="name">Nome</label>
@@ -47,7 +47,7 @@
                   </div>
                   <button class="button" @click="cadastrar()">Cadastrar-se</button>
                   <div class="extras">
-                      <a href="">Volte ao login</a>
+                      <a @click="alternarForm()">Volte ao login</a>
                   </div>
               </form>
           </div>
@@ -86,7 +86,7 @@ export default {
             this.exibirSenhaRedefinir = !this.exibirSenhaRedefinir
         },
         entrar() {
-            this.$store.dispatch('login', {
+            this.$store.dispatch('entrar', {
                 email: this.entrarForm.email,
                 password: this.entrarForm.password
             })

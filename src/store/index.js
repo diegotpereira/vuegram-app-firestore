@@ -26,9 +26,7 @@ const store = new Vuex.Store({
     },
     mutations: {
         setUserProfile(state, val) {
-
             state.userProfile = val
-
         },
         setPerformingRequest(state, val) {
             state.performingRequest = val
@@ -39,27 +37,27 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        async login({ dispatch }, form) {
+        async entrar({ dispatch }, form) {
             // login do usuário
             const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
 
             // buscar o perfil do usuário e definir no estado
-            dispatch('fetchUserProfile', user)
+            dispatch('buscarPerfilUsuario', user)
             console.log(user);
         },
         async cadastrar({ dispatch }, form) {
             const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
 
             await fb.colecaoUsuarios.doc(user.uid).set({
-                name: form.name,
-                title: form.title
-            })
-            console.log(user);
+                    name: form.name,
+                    title: form.title
+                })
+                //console.log(user);
 
             // buscar o perfil do usuário e definir no estado
-            dispatch('fetchUserProfile', user)
+            dispatch('buscarPerfilUsuario', user)
         },
-        async fetchUserProfile({ commit }, user) {
+        async buscarPerfilUsuario({ commit }, user) {
             const userProfile = await fb.colecaoUsuarios.doc(user.uid).get()
 
             commit('setUserProfile', userProfile.data())
@@ -125,7 +123,7 @@ const store = new Vuex.Store({
             })
 
             console.log(usuarioRef);
-            dispatch('fetchUserProfile', { uid: userId })
+            dispatch('buscarPerfilUsuario', { uid: userId })
 
             const postDocs = await fb.colecaoPostagens.where('userId', '==', userId).get()
             postDocs.forEach(doc => {
